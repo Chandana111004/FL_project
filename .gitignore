@@ -194,3 +194,23 @@ archived/
 notes.txt
 todo.txt
 scratch/
+
+# ============================================
+# NFHS-5 / FERTILITY PROJECT SPECIFIC
+# ============================================
+# Encryption keys and encrypted files
+keys/
+*.enc
+
+# Audit logs
+logs/
+
+# NFHS-5 raw dataset (5GB)
+data/nfhs5/
+
+# Processed federated data
+data/processed_dp/
+
+# Keep training history but not model weights
+results/model_round_*.pth
+results/best_model.pth

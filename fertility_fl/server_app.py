@@ -13,6 +13,11 @@ from flwr.common import Metrics
 from fertility_fl.task import load_test_data, get_model_config
 from fertility_fl.model import get_model, evaluate
 
+import os
+import json
+from datetime import datetime
+training_history = []
+
 def weighted_average(metrics: List[Tuple[int, Metrics]]) -> Metrics:
     """
     Aggregate metrics from multiple clients using weighted average
@@ -79,7 +84,31 @@ def server_evaluate(server_round: int, parameters, config):
     print(f"\n[Round {server_round}] Global Test Metrics:")
     print(f"  Test Loss: {test_loss:.4f}")
     print(f"  Test Accuracy: {test_acc:.4f}")
-    
+    # Save results
+    os.makedirs('results', exist_ok=True)
+    training_history.append({
+        'round': server_round,
+        'test_loss': float(test_loss),
+        'test_accuracy': float(test_acc),
+        'timestamp': datetime.now().isoformat()
+    })
+    with open('results/training_history.json', 'w') as f:
+        json.dump(training_history, f, indent=2)
+    torch.save({
+        'round': server_round,
+        'model_state_dict': model.state_dict(),
+        'test_loss': test_loss,
+        'test_accuracy': test_acc,
+        'metadata': metadata
+    }, f'results/model_round_{server_round}.pth')
+    best_acc = max(r['test_accuracy'] for r in training_history)
+    if test_acc >= best_acc:
+        torch.save({
+            'round': server_round,
+            'model_state_dict': model.state_dict(),
+            'metadata': metadata
+        }, 'results/best_model.pth')
+        print(f"  ★ Best model saved! Accuracy: {test_acc:.4f}")
     return test_loss, {
         "test_accuracy": test_acc,
         "test_loss": test_loss
