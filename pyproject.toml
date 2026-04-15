@@ -24,10 +24,10 @@ serverapp = "fertility_fl.server_app:app"
 clientapp = "fertility_fl.client_app_dp:app"
 
 [tool.flwr.app.config]
-num-server-rounds = 10
+num-server-rounds = 20
 fraction-fit = 0.8
 fraction-evaluate = 0.5
-noise-multiplier = 1.0      # Add this
+noise-multiplier = 0.5      # Add this
 max-grad-norm = 1.0 
 
 

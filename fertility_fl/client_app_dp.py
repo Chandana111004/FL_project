@@ -153,7 +153,7 @@ def client_fn(context: Context):
         trainloader=trainloader,
         valloader=valloader,
         model_config=model_config,
-        local_epochs=3,
+        local_epochs=5,
         noise_multiplier=noise_multiplier,
         max_grad_norm=max_grad_norm,
         partition_id=partition_id

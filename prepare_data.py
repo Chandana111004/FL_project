@@ -90,6 +90,15 @@ def clean_data(df):
     print("\nCleaning data...")
 
     # Rename columns to readable names
+    # Force correct column order before renaming
+    CORRECT_ORDER = [
+    	'v012','v025','v106','v190','v502',
+    	'v201','v208','v213','v228','v221','v511','v525',
+    	'v312','v626a','v602',
+    	'sb18s','sb18d','v453','v457','v445','v437','v438',
+    	's728a','s728b','v463a','v463c','s720','v481','v116','v161'
+    ]
+    df = df[CORRECT_ORDER]
     df.columns = FEATURE_NAMES
 
     # ── Handle missing values ──────────────────────────────────
